@@ -1,0 +1,135 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dorm-roommate-matcher"
+version = "1.0.0"
+description = "Dormitory room assignment engine: weighted Gower compatibility, optimal pairing via maximum weight matching, and a per-feature explanation of every placement."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "Ahmet Cevat Deniz" }]
+keywords = ["matching", "assignment", "optimization", "graph-matching", "fastapi"]
+classifiers = [
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+  "numpy>=1.26",
+  "pandas>=2.2",
+  "networkx>=3.3",
+  "scikit-learn>=1.5",
+  "pydantic[email]>=2.7",
+  "pydantic-settings>=2.3",
+  "typer>=0.12",
+  "rich>=13.7",
+  "sqlalchemy>=2.0",
+  "fastapi>=0.111",
+  "uvicorn[standard]>=0.30",
+  "python-multipart>=0.0.9",
+  "pyjwt>=2.8",
+  "bcrypt>=4.1",
+  "faker>=25.0",
+  "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+ui = ["streamlit>=1.35", "plotly>=5.22", "matplotlib>=3.8"]
+postgres = ["psycopg[binary]>=3.1"]
+dev = [
+  "pytest>=8.2",
+  "pytest-cov>=5.0",
+  "hypothesis>=6.100",
+  "ruff>=0.4",
+  "mypy>=1.10",
+  "pre-commit>=3.7",
+  "pandas-stubs",
+]
+
+[project.scripts]
+roommate = "roommate_matcher.cli.main:app"
+
+[project.urls]
+Homepage = "https://github.com/ahmetcevatdeniz/dorm-roommate-matcher"
+Repository = "https://github.com/ahmetcevatdeniz/dorm-roommate-matcher"
+Issues = "https://github.com/ahmetcevatdeniz/dorm-roommate-matcher/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/roommate_matcher"]
+
+# ----------------------------- Ruff -----------------------------
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+  "E", "W",    # pycodestyle
+  "F",         # pyflakes
+  "I",         # isort
+  "N",         # pep8-naming
+  "UP",        # pyupgrade
+  "B",         # bugbear
+  "C4",        # comprehensions
+  "SIM",       # simplify
+  "ARG",       # unused arguments
+  "PTH",       # use pathlib
+  "RUF",       # ruff-specific
+  "D",         # pydocstyle
+  "ANN",       # annotations
+]
+ignore = [
+  "D203",   # conflicts with D211
+  "D213",   # conflicts with D212
+  "ANN401", # allow Any in rare bridge code
+  # The user-facing language is Turkish; "ı", "İ", "ş" etc. are correct spelling,
+  # not homoglyph attacks. Without these the linter flags every Turkish string.
+  "RUF001",
+  "RUF002",
+  "RUF003",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D", "ANN", "ARG"]
+"scripts/*" = ["D", "ANN"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+# ----------------------------- Mypy -----------------------------
+[tool.mypy]
+python_version = "3.12"
+files = ["src", "tests"]
+strict = true
+warn_unreachable = true
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = ["sklearn.*", "faker.*", "networkx.*", "streamlit.*", "plotly.*", "matplotlib.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# Test bodies are checked, but pytest fixture parameters are untyped by convention.
+module = "tests.*"
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+disallow_untyped_calls = false
+
+# ---------------------------- Pytest ----------------------------
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-ra --strict-markers --cov=roommate_matcher --cov-report=term-missing"
+testpaths = ["tests"]
+markers = ["slow: marks slow tests", "integration: API integration tests"]
+
+[tool.coverage.run]
+branch = true
+source = ["src/roommate_matcher"]
+
+[tool.coverage.report]
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:", "raise NotImplementedError"]

@@ -1,0 +1,114 @@
+{
+  "metrics": [
+    {
+      "metric": "weighted_gower",
+      "P@5": 0.7453,
+      "P@10": 0.6973,
+      "R@10": 0.0987,
+      "MRR": 0.8985,
+      "nDCG@10": 0.7265,
+      "queries": 150,
+      "sec": 2.893
+    },
+    {
+      "metric": "hybrid",
+      "P@5": 0.7187,
+      "P@10": 0.6767,
+      "R@10": 0.0946,
+      "MRR": 0.8714,
+      "nDCG@10": 0.6994,
+      "queries": 150,
+      "sec": 4.463
+    },
+    {
+      "metric": "manhattan",
+      "P@5": 0.42,
+      "P@10": 0.4073,
+      "R@10": 0.0512,
+      "MRR": 0.6394,
+      "nDCG@10": 0.4222,
+      "queries": 150,
+      "sec": 0.52
+    },
+    {
+      "metric": "euclidean",
+      "P@5": 0.3973,
+      "P@10": 0.3813,
+      "R@10": 0.047,
+      "MRR": 0.6332,
+      "nDCG@10": 0.3992,
+      "queries": 150,
+      "sec": 0.516
+    },
+    {
+      "metric": "cosine",
+      "P@5": 0.3627,
+      "P@10": 0.3467,
+      "R@10": 0.0395,
+      "MRR": 0.5748,
+      "nDCG@10": 0.3593,
+      "queries": 150,
+      "sec": 0.523
+    },
+    {
+      "metric": "jaccard_interests",
+      "P@5": 0.212,
+      "P@10": 0.202,
+      "R@10": 0.0235,
+      "MRR": 0.4113,
+      "nDCG@10": 0.212,
+      "queries": 150,
+      "sec": 0.064
+    }
+  ],
+  "strategies": [
+    {
+      "strateji": "optimal",
+      "toplam": 84.4946,
+      "ortalama": 0.8449,
+      "en kötü oda": 0.7333,
+      "oracle %": 78.0,
+      "fark %": 0.0,
+      "blocking": 35,
+      "ihlal": 0,
+      "yerleşmeyen": 0,
+      "sn": 2.316
+    },
+    {
+      "strateji": "greedy",
+      "toplam": 83.9022,
+      "ortalama": 0.839,
+      "en kötü oda": 0.5596,
+      "oracle %": 73.0,
+      "fark %": 0.7,
+      "blocking": 0,
+      "ihlal": 0,
+      "yerleşmeyen": 0,
+      "sn": 0.063
+    },
+    {
+      "strateji": "stable",
+      "toplam": 83.9022,
+      "ortalama": 0.839,
+      "en kötü oda": 0.5596,
+      "oracle %": 73.0,
+      "fark %": 0.7,
+      "blocking": 0,
+      "ihlal": 0,
+      "yerleşmeyen": 0,
+      "sn": 0.083
+    },
+    {
+      "strateji": "random",
+      "toplam": 63.3496,
+      "ortalama": 0.6335,
+      "en kötü oda": 0.3508,
+      "oracle %": 15.0,
+      "fark %": 25.03,
+      "blocking": 7016,
+      "ihlal": 12,
+      "yerleşmeyen": 0,
+      "sn": 0.094
+    }
+  ]
+}

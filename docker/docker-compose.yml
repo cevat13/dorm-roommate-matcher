@@ -1,0 +1,51 @@
+name: dorm-roommate-matcher
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: dorm
+      POSTGRES_PASSWORD: dorm
+      POSTGRES_DB: dorm
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dorm -d dorm"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      RM_DATABASE_URL: postgresql+psycopg://dorm:dorm@db:5432/dorm
+      RM_JWT_SECRET: ${RM_JWT_SECRET:-compose-dev-secret-change-me}
+      RM_LOG_LEVEL: INFO
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  ui:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    depends_on:
+      - api
+    environment:
+      RM_DATABASE_URL: postgresql+psycopg://dorm:dorm@db:5432/dorm
+    command: >
+      streamlit run app/streamlit_app.py
+      --server.address 0.0.0.0
+      --server.port 8501
+      --server.headless true
+    ports:
+      - "8501:8501"
+    restart: unless-stopped
+
+volumes:
+  pgdata:

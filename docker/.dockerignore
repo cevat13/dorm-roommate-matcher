@@ -1,0 +1,11 @@
+.venv/
+.git/
+__pycache__/
+*.pyc
+data/
+docs/presentation/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+*.db

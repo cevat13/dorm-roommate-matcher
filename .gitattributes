@@ -1,0 +1,11 @@
+# Normalise line endings so the repo is identical on Windows, macOS and Linux.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.pdf binary
+*.docx binary
+
+# Keep generated reports out of diff noise but still versioned.
+docs/evaluation.json   -diff
+docs/metric_comparison.csv -diff
